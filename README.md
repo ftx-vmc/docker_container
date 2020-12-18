@@ -1,1 +1,2 @@
-# docker_container
+#VMC Docker Container 
+> Initial Check-in
