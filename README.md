@@ -86,4 +86,10 @@ bash-3.2$ vmc_dc_enter.sh -n joyeez_abc
 joyeez@joyeez_abc:~$
 ```  
 
+## Docker-related cheat sheet 
 
+* List all images. __`docker image ls -a`__
+* List all containers. __`docker container ls -a`__
+* List all available virtual network. __`docker network ls -a`__
+* List all containers in one network. __`docker network inspect <network>`__
+* Get details of one container. __`docker inspect <container_name>`__
