@@ -54,18 +54,37 @@ At very beginning, we would like to make one point <span style="color:red">***VE
 
 * ***Docker Container Creation***
 
-ALWAYS prefixes container's name with users' login id.  Then user can easily identify container's ownership by using name.
+Please use __`vmc_dc_start.sh -n <container_name> -i <image_name> -t <image_tag>`__ to start a new container.  This command prefixes the container name with users' login id.  Then user can easily identify container's ownership by using name.
 
 ```
-docker run ubuntu
+vmc_dc_start.sh -i ubuntu -t 18.04 -n abc
+```
+
+```
+docker container ls -a
+
+bash-3.2$ docker container ls -a
+CONTAINER ID   IMAGE          COMMAND       CREATED         STATUS         PORTS     NAMES
+b9f2e49bdfd2   ubuntu:18.04   "/bin/bash"   3 minutes ago   Up 3 minutes             joyeez_abc 
 ```  
 
 * ***Docker Container Deletion***
 
-Do not directly use container deletion command __`docker container rm <container_name>`__.  Instead, please use __`vmc_dc_rm <container_name>`__, which matches the user ID before the deletion, otherwise cancels the deletion.
+Do not directly use container deletion command __`docker container rm <container_name>`__.  Instead, please use __`vmc_dc_rm.sh -n <container_name>`__, which matches the user ID before the deletion, otherwise cancels the deletion.
+
+```
+bash-3.2$ vmc_dc_rm.sh -n joyeez_abc
+-I- Now stop container joyeez_abc ...
+-I- Done.
+```
 
 * ***Login Docker Container***
 
-Use command __`vmc_dc_into <container_name>`__ to login one container.  This command always enter the container by using the user's linux id, instead of as root (Remember: all the users inside containers can be root by using command __`sudo -i`__).  
+Use command __`vmc_dc_enter.sh -n <container_name>`__ to login one container.  This command always enter the container by using the user's linux id, instead of as root (Remember: all the users inside containers can be root by using command __`sudo -i`__).
+
+```
+bash-3.2$ vmc_dc_enter.sh -n joyeez_abc
+joyeez@joyeez_abc:~$
+```  
 
 
