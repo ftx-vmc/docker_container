@@ -1,5 +1,4 @@
 #VMC Docker Container 
-#VMC Docker
 
 This article contains the following sections:
 
