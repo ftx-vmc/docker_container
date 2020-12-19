@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 function warning()
 {
     local _msg=$1
@@ -10,7 +11,13 @@ function _create_user_account() {
   local uid="$2"
   local group_name="$3"
   local gid="$4"
-  addgroup --gid "${gid}" "${group_name}"
+
+  if grep -q $group_name /etc/group; then
+    gid=`$DIR/get_grpid.pl $group_name`
+    warning "group ($group_name) has existed. Get it's gid ($gid)"
+  else
+    addgroup --gid "${gid}" "${group_name}"
+  fi
 
   adduser --disabled-password --force-badname --gecos '' \
     "${user_name}" --uid "${uid}" --gid "${gid}" # 2>/dev/null

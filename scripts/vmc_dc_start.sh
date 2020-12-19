@@ -191,8 +191,10 @@ function determine_gpu_use_host() {
 function post_run_setup() {
     if [ "${USER}" != "root" ]; then
         cp $DIR/docker_start_user.sh /tmp 
+        cp $DIR/get_grpid.pl /tmp 
         docker exec -u root "${container_name}" bash -c '/tmp/docker_start_user.sh'
         rm /tmp/docker_start_user.sh
+        rm /tmp/get_grpid.pl
     fi
 }
 
