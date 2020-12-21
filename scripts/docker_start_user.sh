@@ -6,24 +6,49 @@ function warning()
     echo "-W- $_msg"
     return 0
 }
+
+function info()
+{
+    local _msg=$1
+    echo "-I- $_msg"
+}
+
 function _create_user_account() {
   local user_name="$1"
   local uid="$2"
   local group_name="$3"
   local gid="$4"
 
-  if grep -q $group_name /etc/group; then
-    gid=`$DIR/get_grpid.pl $group_name`
-    warning "group ($group_name) has existed. Get it's gid ($gid)"
+
+  if grep -q "Ubuntu" /etc/os-release; then
+    info "You are working on (Ubuntu). Doing additional setup to facilitate your work. Please wait..."
+    #apt-get update -q && apt-get -y -q install perl vim && apt-get -q autoremove 
+
+    info "Creating userid ($user_name) in the container for you."
+    if grep -q $group_name /etc/group; then
+      gid=`$DIR/get_grpid.pl $group_name`
+      warning "group ($group_name) has existed. Get it's gid ($gid)"
+    else
+      addgroup --gid "${gid}" "${group_name}"
+    fi
+    adduser --disabled-password --force-badname --gecos '' \
+    "${user_name}" --uid "${uid}" --gid "${gid}" # 2>/dev/null
+    usermod -aG sudo "${user_name}"
+    usermod -aG video "${user_name}"
+
+  elif grep -q "CentOS" /etc/os-release; then
+    info "You are working on (CentOs). Doing additional setup to facilitate your work. Please wait..."
+    #yum -y -q install which sudo man perl && yum clean all 
+    info "Creating userid ($user_name) in the container for you."
+    $DIR/centos_add_user.sh 
+
   else
-    addgroup --gid "${gid}" "${group_name}"
+    warning "Currently I just support either ubuntu or centos."
+    warning "In this case, you cannot use vmc_dc_enter.sh to enter the container"
+    warning "Instead, use (docker container exec -it <container_name> /bin/bash). Remember you are logging the container as root."
+    return 0 
   fi
 
-  adduser --disabled-password --force-badname --gecos '' \
-    "${user_name}" --uid "${uid}" --gid "${gid}" # 2>/dev/null
-
-  usermod -aG sudo "${user_name}"
-  usermod -aG video "${user_name}"
 }
 
 function setup_user_bashrc() {

@@ -17,8 +17,9 @@ network="host"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 function show_usage() {
+    filename=$(basename $0)
     cat <<EOF
-Usage: $0 [options] ...
+Usage: $filename [options] ...
 OPTIONS:
     -h, --help             Display this help and exit.
     -i, --image <IMAGE>    Docker image name.
@@ -192,9 +193,11 @@ function post_run_setup() {
     if [ "${USER}" != "root" ]; then
         cp $DIR/docker_start_user.sh /tmp 
         cp $DIR/get_grpid.pl /tmp 
+        cp $DIR/centos_add_user.sh /tmp 
         docker exec -u root "${container_name}" bash -c '/tmp/docker_start_user.sh'
         rm /tmp/docker_start_user.sh
         rm /tmp/get_grpid.pl
+        rm /tmp/centos_add_user.sh
     fi
 }
 

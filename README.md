@@ -84,7 +84,13 @@ Use command __`vmc_dc_enter.sh -n <container_name>`__ to login one container.  T
 ```
 bash-3.2$ vmc_dc_enter.sh -n joyeez_abc
 joyeez@joyeez_abc:~$
-```  
+``` 
+
+However, you might find in some cases, you would like to login as __`root`__.  Then, you can use the following command.
+
+```
+vmc_dc_enter.sh -n joyeez_abc -r 
+``` 
 
 ## Docker-related cheat sheet 
 
