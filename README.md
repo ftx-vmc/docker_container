@@ -79,18 +79,20 @@ bash-3.2$ vmc_dc_rm.sh -n joyeez_abc
 
 * ***Login Docker Container***
 
-Use command __`vmc_dc_enter.sh -n <container_name>`__ to login one container.  This command always enter the container by using the user's linux id, instead of as root (Remember: all the users inside containers can be root by using command __`sudo -i`__).
+Use command __`vmc_dc_enter.sh -n <container_name>`__ to login one container.  This command always enter the container by using the user's linux id, instead of as root.
 
 ```
 bash-3.2$ vmc_dc_enter.sh -n joyeez_abc
 joyeez@joyeez_abc:~$
 ``` 
 
-However, you might find in some cases, you would like to login as __`root`__.  Then, you can use the following command.
+Remember: all the users inside containers can be root by using command __`sudo -i`__.  But you have to install the __`sudo`__ package before doing so. In this case, you have to firstly login as __`root`__.  Then, you can use the following command in another terminal.
 
 ```
 vmc_dc_enter.sh -n joyeez_abc -r 
 ``` 
+
+In fact, it is always a good practice to login as root very explicitly by using the above command in a separate terminal to avoid any mis-conductions while you are switching back and forth between root and regular user within one terminal.
 
 ## Docker-related cheat sheet 
 
@@ -98,4 +100,10 @@ vmc_dc_enter.sh -n joyeez_abc -r
 * List all containers. __`docker container ls -a`__
 * List all available virtual network. __`docker network ls -a`__
 * List all containers in one network. __`docker network inspect <network>`__
-* Get details of one container. __`docker inspect <container_name>`__
+* Get details of one container. __`docker container inspect <container_name>`__
+
+>NOTE: To save the effort for repeatly typing the above commands, you can setup the alias within your __`~/.bashrc`__. For example:
+>
+```
+alias d_c_i "docker container inspect"
+``` 
